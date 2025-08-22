@@ -1,5 +1,9 @@
 -- Juego Educativo - Base de Datos Completa
 -- Eliminar tablas si existen
+SET NAMES utf8mb4;
+SET CHARACTER SET utf8mb4;
+
+-- Eliminar tablas si existen
 DROP TABLE IF EXISTS user_answers;
 DROP TABLE IF EXISTS game_sessions;
 DROP TABLE IF EXISTS questions;
@@ -18,7 +22,7 @@ CREATE TABLE users (
     total_questions INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Crear tabla de categorías
 CREATE TABLE categories (
@@ -28,7 +32,7 @@ CREATE TABLE categories (
     icon VARCHAR(50),
     color VARCHAR(20),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Crear tabla de preguntas
 CREATE TABLE questions (
@@ -44,7 +48,7 @@ CREATE TABLE questions (
     explanation TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Crear tabla de sesiones de juego
 CREATE TABLE game_sessions (
@@ -58,7 +62,7 @@ CREATE TABLE game_sessions (
     completed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Crear tabla de respuestas de usuario
 CREATE TABLE user_answers (
@@ -72,7 +76,18 @@ CREATE TABLE user_answers (
     answered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (session_id) REFERENCES game_sessions(id) ON DELETE CASCADE,
     FOREIGN KEY (question_id) REFERENCES questions(id) ON DELETE CASCADE
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+ALTER DATABASE educational_game
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+
+ALTER TABLE users         CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER TABLE categories    CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER TABLE questions     CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER TABLE game_sessions CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER TABLE user_answers  CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 
 -- Insertar categorías
 INSERT INTO categories (name, description, icon, color) VALUES

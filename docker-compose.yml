@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: educational_game_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword123
+      MYSQL_DATABASE: educational_game
+      MYSQL_USER: gameuser
+      MYSQL_PASSWORD: gamepass123
+      MYSQL_CHARSET: utf8mb4
+      MYSQL_COLLATION: utf8mb4_unicode_ci
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./scripts/database.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - game_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "gameuser", "-pgamepass123"]
+      timeout: 20s
+      retries: 10
+      interval: 10s
+
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: educational_game_app
+    restart: unless-stopped
+    ports:
+      - "4500:4500"
+    environment:
+      - NODE_ENV=production
+      - DB_HOST=mysql
+      - DB_USER=gameuser
+      - DB_PASSWORD=gamepass123
+      - DB_NAME=educational_game
+      - JWT_SECRET=super_secret_jwt_key_for_educational_game_2024
+      - DB_PORT=3306
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - game_network
+
+volumes:
+  mysql_data:
+
+networks:
+  game_network:
+    driver: bridge

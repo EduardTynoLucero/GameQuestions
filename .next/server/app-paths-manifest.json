@@ -1,0 +1,10 @@
+{
+  "/api/game/answer/route": "app/api/game/answer/route.js",
+  "/api/game/complete/route": "app/api/game/complete/route.js",
+  "/api/categories/route": "app/api/categories/route.js",
+  "/api/game/start/route": "app/api/game/start/route.js",
+  "/auth/login/page": "app/auth/login/page.js",
+  "/auth/register/page": "app/auth/register/page.js",
+  "/page": "app/page.js",
+  "/game/page": "app/game/page.js"
+}
